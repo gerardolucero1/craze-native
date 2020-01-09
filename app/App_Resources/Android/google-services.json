@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "999017124538",
+    "firebase_url": "https://craze-71d6b.firebaseio.com",
+    "project_id": "craze-71d6b",
+    "storage_bucket": "craze-71d6b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:999017124538:android:ddc1f5ae756740d2d72883",
+        "android_client_info": {
+          "package_name": "com.partnergrammer.craze"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "999017124538-1a8om6s4d52nmh2bh031ju1q9586ra4q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.partnergrammer.craze",
+            "certificate_hash": "fc56a825a7d176dc0db83d846c55d4f4dcdd2929"
+          }
+        },
+        {
+          "client_id": "999017124538-10i0b6r7k6777e63le421r06ivq3tcpe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.partnergrammer.craze",
+            "certificate_hash": "87af0db6030021829c41d596b4ac390588c32d69"
+          }
+        },
+        {
+          "client_id": "999017124538-5gklu54efaaejh8a1gnojrll1g8gpado.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpGZdpD4kaH1T5ZMZFyZL1wok4ySkniu8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "999017124538-5gklu54efaaejh8a1gnojrll1g8gpado.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

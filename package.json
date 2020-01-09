@@ -1,0 +1,41 @@
+{
+    "name": "craze-native",
+    "version": "1.0.0",
+    "description": "CRAZE fashion soul",
+    "author": "Gerardo Lucero <gera_conecta@hotmail.com>",
+    "license": "MIT",
+    "nativescript": {
+        "id": "com.partnergrammer.craze",
+        "templateVersion": "v2",
+        "tns-ios": {
+            "version": "6.0.1"
+        },
+        "tns-android": {
+            "version": "6.3.1"
+        }
+    },
+    "dependencies": {
+        "@nativescript/theme": "^2.2.1",
+        "@vue/devtools": "^5.3.3",
+        "firebase": "^7.6.1",
+        "nativescript-bottom-navigation": "^2.0.5",
+        "nativescript-material-bottomnavigationbar": "^3.0.6",
+        "nativescript-plugin-firebase": "^10.3.3",
+        "nativescript-socketio": "^3.3.1",
+        "nativescript-toasty": "^3.0.0-alpha.2",
+        "nativescript-vue": "^2.4.0",
+        "nativescript-vue-devtools": "^1.2.0",
+        "tns-core-modules": "^6.3.2",
+        "vuex": "^3.1.1"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.0.0",
+        "@babel/preset-env": "^7.0.0",
+        "babel-loader": "^8.0.2",
+        "nativescript-dev-webpack": "^1.4.1",
+        "nativescript-vue-template-compiler": "^2.0.0",
+        "nativescript-worker-loader": "^0.10.0",
+        "node-sass": "^4.9.2",
+        "vue-loader": "^15.4.0"
+    }
+}
