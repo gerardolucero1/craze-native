@@ -18,6 +18,7 @@
         "@nativescript/theme": "^2.2.1",
         "@vue/devtools": "^5.3.3",
         "firebase": "^7.6.1",
+        "nativescript-accordion": "^6.0.0-beta.2",
         "nativescript-bottom-navigation": "^2.0.5",
         "nativescript-material-bottomnavigationbar": "^3.0.6",
         "nativescript-plugin-firebase": "^10.3.3",

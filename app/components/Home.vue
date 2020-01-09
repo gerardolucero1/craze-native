@@ -51,7 +51,7 @@
                         <Image class="btn-navigation" src="~/assets/images/home.png" />
                     </FlexboxLayout>
                     <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="1">
-                        <Image class="btn-navigation" src="~/assets/images/gancho.png" />
+                        <Image class="btn-navigation" src="~/assets/images/gancho.png" width="50" @tap="goToCloset" />
                     </FlexboxLayout>
                     <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="2">
                         <Image class="btn-navigation" src="~/assets/images/tiendas.png" />
@@ -115,6 +115,10 @@ export default {
             })
         },
 
+        goToCloset(){
+            this.$navigateTo(Closet)
+        },
+
         async getClothes(){
             try {
                 let response = await firebase.firestore.collection('prendas')
@@ -128,6 +132,9 @@ export default {
                                                     })
                                                     
                                                 })
+                if(response){
+                    console.log(this.clothes)
+                }
             } catch(e) {
                 console.log(e);
             }               
