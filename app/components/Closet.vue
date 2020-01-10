@@ -1,4 +1,14 @@
 <style scoped>
+    .header-bar{
+        background-color: white;
+    }
+
+    .header-text{
+        color: black;
+        font-weight: bold;
+        font-size: 18px;
+    }
+    
     .navigation{
         width: 100%;
         height: 100%;
@@ -16,11 +26,20 @@
 </style>
 
 <template>
-    <Page actionBarHidden="true">
+    <Page actionBarHidden="false">
+        <ActionBar class="header-bar" title="CRAZE">
+            <StackLayout orientation="horizontal"
+                ios:horizontalAlignment="center"
+                android:horizontalAlignment="left">
+                <Image src="res://nativescript_logo" class="action-image"></Image>
+                <Label class="header-text" text="Closet"></Label>
+            </StackLayout>
+        </ActionBar>
+
         <GridLayout rows="*, 60">
             <ScrollView row="0">
                 <WrapLayout orientation="horizontal" v-if="clothes.length != 0">
-                    <GridLayout padding="0" v-for="(item, index) in clothes" width="50%" height="350">
+                    <GridLayout padding="0" v-for="(item, index) in clothes" :key="index" width="50%" height="350">
                         <StackLayout>
                             <Image margin="10" android:borderRadius="5" androidElevation="5" android:backgroundColor="white" :src="item.foto" stretch="aspectFill" @tap="goToDetails(item.id)" />
                         </StackLayout>

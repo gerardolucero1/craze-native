@@ -1,4 +1,14 @@
 <style scoped>
+    .header-bar{
+        background-color: white;
+    }
+
+    .header-text{
+        color: black;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
     .banner{
         height: 90%;
         background-size: cover;
@@ -6,7 +16,8 @@
     }
 
     .main-page{
-        background-color: rgba(249, 220, 235, 1);
+        /*background-color: rgba(249, 220, 235, 1);*/
+        background-color: white;
     }
 
     .btn-control{
@@ -30,15 +41,24 @@
 </style>
 
 <template>
-    <Page class="main-page" actionBarHidden="true">
+    <Page class="main-page" actionBarHidden="false">
+        <ActionBar class="header-bar" title="CRAZE">
+            <StackLayout orientation="horizontal"
+                ios:horizontalAlignment="center"
+                android:horizontalAlignment="left">
+                <Image src="res://nativescript_logo" class="action-image"></Image>
+                <Label class="header-text" :text="changeTitle"></Label>
+            </StackLayout>
+        </ActionBar>
+
         <GridLayout rows="*, 60">
             <StackLayout row="0">
                 <!-- <WrapLayout orientation="vertical"> -->
                     <StackLayout v-if="clothes.length != 0" class="banner">
-                        <Image class="imagen" :src="clothes[0].foto" stretch="aspectFill" @tap="goToDetails(clothes[0].id)" />
+                        <Image class="imagen" margin="20" android:borderRadius="20" androidElevation="5" android:backgroundColor="white" :src="clothes[0].foto" stretch="aspectFill" @tap="goToDetails(clothes[0].id)" />
                     </StackLayout>
                 
-                    <FlexboxLayout justifyContent="space-around">
+                    <FlexboxLayout marginTop="-10" justifyContent="space-around">
                         <Image class="btn-control" @tap="disLike" src="~/assets/images/dislike.png" />
                         <Image class="btn-control" @tap="like" src="~/assets/images/like.png" />
                     </FlexboxLayout>
@@ -91,12 +111,23 @@ export default {
     computed:{
         ...mapState([
                 'user'
-            ])
+            ]),
+
+        changeTitle(){
+            let title = 'Craze'
+
+            if(this.clothes.length != 0){
+                title = this.clothes[0].nombre
+            }
+
+            return title
+        }
     },
 
     watch:{
         clothes(){
             if(this.clothes.length == 1){
+                console.log('Se acabaron los posts')
                 this.nextClothes()
             }
         }
@@ -142,7 +173,7 @@ export default {
 
         async nextClothes(){
             try {
-                let response = await firestore.firebase.collection('prendas')
+                let response = await firebase.firestore.collection('prendas')
                                                 .orderBy('id')
                                                 .limit(4)
                                                 .startAfter(this.last)

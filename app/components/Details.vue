@@ -1,4 +1,14 @@
 <style scoped>
+    .header-bar{
+        background-color: white;
+    }
+
+    .header-text{
+        color: black;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
     .navigation{
         width: 100%;
         height: 100%;
@@ -69,7 +79,16 @@
 </style>
 
 <template>
-    <Page actionBarHidden="true">
+    <Page actionBarHidden="false">
+        <ActionBar class="header-bar" title="CRAZE">
+            <StackLayout orientation="horizontal"
+                ios:horizontalAlignment="center"
+                android:horizontalAlignment="left">
+                <Image src="res://nativescript_logo" class="action-image"></Image>
+                <Label class="header-text" :text="changeTitle"></Label>
+            </StackLayout>
+        </ActionBar>
+
         <GridLayout rows="*, 60">
             <ScrollView row="0" v-if="garment != null">
                 <WrapLayout>
@@ -172,6 +191,18 @@ export default {
         	garment: null,
             boutique: null,
             control: 1,
+        }
+    },
+
+    computed:{
+        changeTitle(){
+            let title = 'Craze'
+
+            if(this.garment){
+                title = this.garment.nombre 
+            }
+
+            return title
         }
     },
 
