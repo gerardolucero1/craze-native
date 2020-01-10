@@ -74,7 +74,7 @@
                         <Image class="btn-navigation" src="~/assets/images/gancho.png" width="50" @tap="goToCloset" />
                     </FlexboxLayout>
                     <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="2">
-                        <Image class="btn-navigation" src="~/assets/images/tiendas.png" />
+                        <Image class="btn-navigation" src="~/assets/images/tiendas.png" @tap="goToMap" />
                     </FlexboxLayout>
                     <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="3">
                         <Image class="btn-navigation" src="~/assets/images/config.png" />
@@ -95,6 +95,7 @@ import { mapState } from 'vuex'
 //Pages
 import Home from './Home.vue'
 import Closet from './Closet.vue'
+import Mapa from './Map.vue'
 import Details from './Details.vue'
 
 
@@ -148,6 +149,10 @@ export default {
 
         goToCloset(){
             this.$navigateTo(Closet)
+        },
+
+        goToMap(){
+            this.$navigateTo(Mapa)
         },
 
         async getClothes(){
