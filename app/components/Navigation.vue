@@ -1,5 +1,5 @@
 <style>
-	.header-bar{
+    .header-bar{
         background-color: white;
     }
 
@@ -24,42 +24,46 @@
         width: 90px;
     }
 
+    .details{
+        width: 100%;
+    }
+
 </style>
 
 <template>
-	<Page actionBarHidden="false">
-		<ActionBar class="header-bar" title="CRAZE">
+    <Page actionBarHidden="false">
+        <ActionBar class="header-bar" title="CRAZE">
             <StackLayout orientation="horizontal"
                 ios:horizontalAlignment="center"
                 android:horizontalAlignment="left">
                 <!-- <Image width="40" src="~/assets/images/logo.png" class="action-image"></Image> -->
-                <Label class="header-text" text="Mapa"></Label>
+                <Label class="header-text" :text="changeTitle"></Label>
             </StackLayout>
         </ActionBar>
 
         <GridLayout rows="*, 60">
             <ScrollView row="0">
                 <WrapLayout>
-                   <!--  <StackLayout>
-                        <Button @tap="getDirections">Get Directions</Button>
+                    <StackLayout>
+                        <!-- <Button @tap="getDirections">Get Directions</Button>
                         <Button @tap="clearRoute">Clear Route</Button>
                         <Button @tap="startJourney">Start Journey</Button>
-                        <button @tap="endJourney">End Journey</button>
+                        <button @tap="endJourney">End Journey</button> -->
 
-                        <TextView :text="journeyDetails" editable="false"/>
-                    </StackLayout> -->
-					<StackLayout>
-						<MapView
+                        <TextView class="details" margin="0" editable="false" :text="journeyDetails"/>
+                    </StackLayout>
+                    <StackLayout>
+                        <MapView
                           width="100%"
-                          height="590"
+                          height="490"
                           :zoom="zoom"
                           :latitude="origin.latitude"
                           :longitude="origin.longitude"
                           v-if="allowExecution"
                           @mapReady="mapReady"
-                          @markerSelect="getStore($event)"
+                          @coordinateLongPress="locationSelected"
                         />
-					</StackLayout>
+                    </StackLayout>
                 </WrapLayout>
                     
             </ScrollView>
@@ -73,7 +77,7 @@
                         <Image class="btn-navigation" src="~/assets/images/gancho.png" width="50" @tap="goToCloset" />
                     </FlexboxLayout>
                     <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="2">
-                        <Image class="btn-navigation" src="~/assets/images/tiendas.png" />
+                        <Image class="btn-navigation" src="~/assets/images/tiendas.png" @tap="gotToMap" />
                     </FlexboxLayout>
                     <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="3">
                         <Image class="btn-navigation" src="~/assets/images/config.png" @tap="goToSettings" />
@@ -81,7 +85,7 @@
                 </GridLayout>
             </StackLayout>
         </GridLayout>
-	</Page>
+    </Page>
 </template>
 
 <script>
@@ -109,25 +113,24 @@ import { store } from 'vuex'
 import Home from './Home.vue'
 import Closet from './Closet.vue'
 import Mapa from './Map.vue'
-import Navigation from './Navigation.vue'
-import Details from './Details.vue'
 import Settings from './Settings.vue'
 
-//Modals
-import ModalBoutique from './modal/ModalBoutique.vue'
-
 export default{
-	name: 'Map',
+    name: 'Navigation',
 
-	data(){
-		return{
+    props:[
+        'id'
+    ],
+
+    data(){
+        return{
             origin: { 
                 latitude: 0, 
                 longitude: 0 
             },
             destination: { 
-                latitude: 28.7281124, 
-                longitude: -106.1194358
+                latitude: 0, 
+                longitude: 0
             },
             journeyDetails: 'Journey: Not started yet!',
             allowExecution: false,
@@ -136,10 +139,9 @@ export default{
             zoom: 17,
             APIKEY: 'AIzaSyBpGZdpD4kaH1T5ZMZFyZL1wok4ySkniu8',
             locations: [],
-            boutiques: [],
-            marker: null,
-		}
-	},
+            boutique: {},
+        }
+    },
 
     mixins: [ 
         MapsHelper.MapsUIHelper, 
@@ -167,24 +169,38 @@ export default{
             .then(() => this.allowExecution = true)
             .catch(() => this.allowExecution = false)
 
+        //this.startJourney()
         //this.getLocation()
     },
 
-	mounted(){
-        // this.getStores()
-	},
+    mounted(){
+        this.getStore()
+    },
 
-	computed:{
+    computed:{
+        changeTitle(){
+            let title = 'Craze'
 
-	},
+            if(this.boutique){
+                title = this.boutique.nombre
+                
+            }
 
-	methods:{
-		goToHome(){
+            return title
+        }
+    },
+
+    methods:{
+        goToHome(){
             this.$navigateTo(Home)
         },
 
         goToCloset(){
             this.$navigateTo(Closet)
+        },
+
+        goToMap(){
+            this.$navigateTo(Mapa)
         },
 
         goToSettings(){
@@ -205,55 +221,23 @@ export default{
         //         console.log("Error: " + (e.message || e));
         //     })
         // },
-        async getStores(){
+
+        async getStore(){
             try {
                 let response = await firebase.firestore.collection('boutiques')
-                                        .onSnapshot(query => {       
-                                            query.forEach(doc => {
-                                                this.boutiques.push(doc.data())
-                                            })
+                                                        .doc(this.id)
+                                                        .get()
 
-                                        this.putBoutiques()
-                                        })
-            } catch (e) {
-                console.log(e)
+                if(response.exists){
+                    this.boutique = response.data()
+
+                    this.destination.latitude = this.boutique.ubicacion.latitude
+                    this.destination.longitude = this.boutique.ubicacion.longitude
+                }   
+            } catch(e) {
+                // statements
+                console.log(e);
             }
-                
-        },
-
-        putBoutiques(){
-                // let marker = new Marker();
-
-                // marker.position = Position.positionFromLatLng(28.676912, -106.080275);
-                // marker.title = 'Limesoda'
-                // marker.snippet = "Fashion boutique"
-                // marker.userData = {index: 1}
-                // this.mapView.addMarker(marker)
-            
-            
-
-            this.boutiques.forEach((result) => {
-                let marker = new Marker()
-                marker.position = Position.positionFromLatLng(result.ubicacion.latitude, result.ubicacion.longitude)
-                marker.title = result.nombre
-                marker.snippet = "Fashion boutique"
-                marker.id = result.id
-                marker.userData = {index: 1}
-                this.mapView.addMarker(marker)
-            })
-
-            // console.log(JSON.stringify(this.boutiques))
-        },
-
-        getStore(args){
-            // console.log('Hola')
-            // this.marker = args.object
-            console.log(args.marker.id)
-            this.$showModal(ModalBoutique, {
-                props:{
-                    id: args.marker.id,
-                }
-            })
         },
 
         //Actions MAP
@@ -273,7 +257,7 @@ export default{
             /* set map origin coordinates to present device location */
             this.fetchMyLocation();
 
-            this.getStores();
+            this.startJourney();
         },
 
         locationSelected(args) {
@@ -320,6 +304,14 @@ export default{
             this.journeyDetails = "Journey started...";
             /* start watching for location changes and update the map and journey details accordingly */
             this.watchLocationAndUpdateJourney();
+
+            const marker = new Marker()
+
+            marker.position = Position.positionFromLatLng(this.destination.latitude, this.destination.longitude)
+            marker.title = this.boutique.nombre
+            marker.snippet = "Fashion boutique";
+            marker.userData = {index: 1};
+            (this.mapView).addMarker(marker);
         },
 
         endJourney() {
@@ -335,7 +327,7 @@ export default{
             this.journeyStarted = false;
             this.journeyDetails = "Destination Reached.";
         }
-	}
+    }
 }
 </script>
 

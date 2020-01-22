@@ -1,0 +1,387 @@
+<style scoped>
+    .header-bar{
+        background-color: white;
+    }
+
+    .header-text{
+        color: black;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .navigation{
+        width: 100%;
+        height: 100%;
+        left: 0;
+        bottom: 0;
+        background-color: white;
+        border-width: 1 0 0 0;
+        border-color: rgba(218, 218, 218, 1);
+        border-radius: 0;
+    }
+
+    .btn-navigation{
+        width: 90px;
+    }
+
+    .btn-options{
+        width: 70px;
+    }
+
+    .container{
+        width: 90%;
+        margin-left: 5%;
+    }
+
+    .separator-line{
+        border-width: 1 0 0 0;
+        border-color: rgba(218, 218, 218, 1);
+        width: 950%;
+    }
+
+    .btn-save{
+        width: 90%;
+        color: white;
+        font-weight: bold;
+        font-family: "Roboto";
+        background-color: black;
+    }
+
+    .btn-close{
+        width: 90%;
+        color: white;
+        font-weight: bold;
+        font-family: "Roboto";
+        background-color: red;
+    }
+
+</style>
+
+<template>
+    <Page actionBarHidden="false">
+        <ActionBar class="header-bar" title="CRAZE">
+            <StackLayout orientation="horizontal"
+                ios:horizontalAlignment="center"
+                android:horizontalAlignment="left">
+                <Image src="res://nativescript_logo" class="action-image"></Image>
+                <Label class="header-text" :text="changeTitle"></Label>
+            </StackLayout>
+        </ActionBar>
+
+        <GridLayout rows="*, 60">
+            <ScrollView row="0">
+                <WrapLayout>
+                    <StackLayout class="banner">
+                        <StackLayout marginBottom="-10" orientation="horizontal">
+                            <FlexboxLayout justifyContent="flex-start" alignItems="center" >
+                                <Switch @checkedChange="addCategory('sueteres')" v-model="categorias.sueteres" />
+                            </FlexboxLayout>
+                            <FlexboxLayout justifyContent="center" alignItems="center" >
+                                <Label marginLeft="20" marginTop="11" text="Sueteres" />
+                            </FlexboxLayout>
+                        </StackLayout>
+
+                        <StackLayout marginBottom="-10" orientation="horizontal">
+                            <FlexboxLayout justifyContent="flex-start" alignItems="center" >
+                                <Switch @checkedChange="addCategory('blusas')" v-model="categorias.blusas" />
+                            </FlexboxLayout>
+                            <FlexboxLayout justifyContent="center" alignItems="center" >
+                                <Label marginLeft="20" marginTop="11" text="Blusas" />
+                            </FlexboxLayout>
+                        </StackLayout>
+
+                        <StackLayout marginBottom="-10" orientation="horizontal">
+                            <FlexboxLayout justifyContent="flex-start" alignItems="center" >
+                                <Switch @checkedChange="addCategory('camisetas')" v-model="categorias.camisetas" />
+                            </FlexboxLayout>
+                            <FlexboxLayout justifyContent="center" alignItems="center" >
+                                <Label marginLeft="20" marginTop="11" text="Camisetas" />
+                            </FlexboxLayout>
+                        </StackLayout>
+
+                        <StackLayout marginBottom="-10" orientation="horizontal">
+                            <FlexboxLayout justifyContent="flex-start" alignItems="center" >
+                                <Switch @checkedChange="addCategory('chamarras')" v-model="categorias.chamarras" />
+                            </FlexboxLayout>
+                            <FlexboxLayout justifyContent="center" alignItems="center" >
+                                <Label marginLeft="20" marginTop="11" text="Chamarras" />
+                            </FlexboxLayout>
+                        </StackLayout>
+
+                        <StackLayout marginBottom="-10" orientation="horizontal">
+                            <FlexboxLayout justifyContent="flex-start" alignItems="center" >
+                                <Switch @checkedChange="addCategory('vestidos')" v-model="categorias.vestidos" />
+                            </FlexboxLayout>
+                            <FlexboxLayout justifyContent="center" alignItems="center" >
+                                <Label marginLeft="20" marginTop="11" text="Vestidos" />
+                            </FlexboxLayout>
+                        </StackLayout>
+
+                        <StackLayout marginBottom="-10" orientation="horizontal">
+                            <FlexboxLayout justifyContent="flex-start" alignItems="center" >
+                                <Switch @checkedChange="addCategory('pantalones')" v-model="categorias.pantalones" />
+                            </FlexboxLayout>
+                            <FlexboxLayout justifyContent="center" alignItems="center" >
+                                <Label marginLeft="20" marginTop="11" text="Pantalones" />
+                            </FlexboxLayout>
+                        </StackLayout>
+
+                        <StackLayout marginBottom="-10" orientation="horizontal">
+                            <FlexboxLayout justifyContent="flex-start" alignItems="center" >
+                                <Switch @checkedChange="addCategory('shorts')" v-model="categorias.shorts" />
+                            </FlexboxLayout>
+                            <FlexboxLayout justifyContent="center" alignItems="center" >
+                                <Label marginLeft="20" marginTop="11" text="Shorts" />
+                            </FlexboxLayout>
+                        </StackLayout>
+
+                        <StackLayout marginBottom="-10" orientation="horizontal">
+                            <FlexboxLayout justifyContent="flex-start" alignItems="center" >
+                                <Switch @checkedChange="addCategory('sacos')" v-model="categorias.sacos" />
+                            </FlexboxLayout>
+                            <FlexboxLayout justifyContent="center" alignItems="center" >
+                                <Label marginLeft="20" marginTop="11" text="Sacos" />
+                            </FlexboxLayout>
+                        </StackLayout>
+
+                        <StackLayout marginBottom="-10" orientation="horizontal">
+                            <FlexboxLayout justifyContent="flex-start" alignItems="center" >
+                                <Switch @checkedChange="addCategory('zapatos')" v-model="categorias.zapatos" />
+                            </FlexboxLayout>
+                            <FlexboxLayout justifyContent="center" alignItems="center" >
+                                <Label marginLeft="20" marginTop="11" text="Zapatos" />
+                            </FlexboxLayout>
+                        </StackLayout>
+
+                        <StackLayout marginBottom="-10" orientation="horizontal">
+                            <FlexboxLayout justifyContent="flex-start" alignItems="center" >
+                                <Switch @checkedChange="addCategory('botas')" v-model="categorias.botas" />
+                            </FlexboxLayout>
+                            <FlexboxLayout justifyContent="center" alignItems="center" >
+                                <Label marginLeft="20" marginTop="11" text="Botas" />
+                            </FlexboxLayout>
+                        </StackLayout>
+                    </StackLayout>
+
+                    <StackLayout class="container">
+                        <StackLayout marginTop="20" marginBottom="10" class="separator-line"></StackLayout>
+                        
+                        <Label marginLeft="35" marginBottom="-13" :text="'Rango de busqueda: ' + range + 'KM'" />
+                        <Slider v-model="range" />
+
+                        <StackLayout>
+                            <Button class="btn-save" text="GUARDAR CONFIGURACION" @tap="saveSettings" />
+                            <Button class="btn-close" text="CERRAR SESION" @tap="closeSesion" />
+                        </StackLayout>
+                    </StackLayout>
+                </WrapLayout>
+                    
+            </ScrollView>
+
+            <StackLayout row="1" orientation="horizontal">
+                <GridLayout columns="*, *, *, *" rows="60" class="navigation">
+                    <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="0">
+                        <Image class="btn-navigation" src="~/assets/images/home.png" @tap="goToHome" />
+                    </FlexboxLayout>
+                    <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="1">
+                        <Image class="btn-navigation" src="~/assets/images/gancho.png" width="50" @tap="goToCloset" />
+                    </FlexboxLayout>
+                    <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="2">
+                        <Image class="btn-navigation" src="~/assets/images/tiendas.png" @tap="goToMap" />
+                    </FlexboxLayout>
+                    <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="3">
+                        <Image class="btn-navigation" src="~/assets/images/config.png" />
+                    </FlexboxLayout>
+                </GridLayout>
+            </StackLayout>
+        </GridLayout>
+    </Page>
+</template>
+
+<script>
+//Firebase
+const firebase = require("nativescript-plugin-firebase")
+
+//Vuex
+import { mapState } from 'vuex'
+
+//Toast
+const toast = require('nativescript-toasts')
+
+//Pages
+import Home from './Home.vue'
+import Closet from './Closet.vue'
+import Mapa from './Map.vue'
+import Navigation from './Navigation.vue'
+import Details from './Details.vue'
+import Settings from './Settings.vue'
+import Inicio from './App.vue'
+
+export default {
+    name: 'Settings',
+
+    data(){
+        return{
+            categorias: {
+                sueteres: false,
+                blusas: false,
+                camisetas: false,
+                chamarras: false,
+                vestidos: false,
+                pantalones: false,
+                shorts: false,
+                sacos: false,
+                zapatos: false,
+                botas: false,
+            },
+            seleccion: [],
+            range: 0,
+        }
+    },
+
+    computed:{
+        ...mapState([
+            'user'
+        ]),
+
+        changeTitle(){
+            let title = 'Configuracion'
+
+            return title
+        }
+    },
+
+    mounted() {
+        //this.getCategories()
+        this.getSettings()
+    },
+
+    methods: {
+        goToHome(){
+            this.$navigateTo(Home)
+        },
+
+        goToCloset(){
+            this.$navigateTo(Closet)
+        },
+
+        goToMap(){
+            this.$navigateTo(Mapa)
+        },
+
+        addCategory(name){
+            console.log(name)
+            if(this.seleccion.includes(name)){
+                let index = this.seleccion.indexOf(name)
+                this.seleccion.splice(index, 1)
+            }else{
+               //this.seleccion.push(name)
+            }
+        },
+
+        checkSettings(){
+            for (let i in this.categorias) {
+                if(this.categorias.hasOwnProperty(i)){
+                    this.seleccion.forEach(element => {
+                        if(element == i){
+                            this.categorias[i] = true
+                        }
+                    })
+                }
+            }
+        },
+
+        async getCategories(){
+            try{
+                let response = await firebase.firestore.collection('categorias')
+                                                        .get()
+                                                        .then(query => {
+                                                            query.forEach(doc => {
+                                                                this.categories.push(doc.data())
+                                                            })
+                                                        })
+            }
+            catch(e){
+                console.log(e)
+            }
+        },
+
+        async getSettings(){
+            try{
+                let response = await firebase.firestore.collection('configuraciones')
+                                                        .doc(this.user.uid)
+                                                        .get()
+
+                if(response.exists){
+                    this.seleccion = response.data().categorias
+                    this.range = response.data().rangoBusqueda
+
+                    this.checkSettings()
+                }
+            }
+            catch(e){
+                console.log(e)
+            }
+        },
+
+        async saveSettings(){
+            try{
+                for (let i in this.categorias) {
+                    if(this.categorias.hasOwnProperty(i)){
+                        if(this.categorias[i] == true){
+                            this.seleccion.push(i)
+                        }
+                    }
+                }
+
+                Array.prototype.unique=function(a){
+                    return function(){return this.filter(a)}}(function(a,b,c){return c.indexOf(a,b+1)<0
+                })
+
+                let settings = {
+                    nombre: this.user.nombre,
+                    categorias: this.seleccion.unique(),
+                    rangoBusqueda: this.range
+                }
+
+                let response = await firebase.firestore.collection('configuraciones')
+                                                        .doc(this.user.uid)
+                                                        .set(settings)
+
+            }
+            catch(e){
+                console.log(e)
+            }
+            finally{
+                console.log('Configuraciones aplicadas')
+                var options = {
+                    text: "Todo OK",
+                    duration : toast.DURATION.SHORT,
+                    position : toast.POSITION.BOTTOM //optional
+                }
+                toast.show(options)
+            }
+        },
+
+        async closeSesion(){
+            try{
+                await firebase.logout()
+                this.$navigateTo(Inicio)
+            }
+            catch(e){
+                console.log(e)
+            }
+        }
+
+    },
+}
+</script>
+
+
+
+
+
+
+
+
+

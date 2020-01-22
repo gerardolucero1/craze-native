@@ -13,6 +13,8 @@
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 	<uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />    
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
 	<application
 		android:name="com.tns.NativeScriptApplication"
@@ -22,7 +24,10 @@
 		android:theme="@style/AppTheme"
 		android:usesCleartextTraffic="true">
 
+		<service android:name="com.mapbox.services.android.telemetry.service.TelemetryService" />
+
 		<meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+		<meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBpGZdpD4kaH1T5ZMZFyZL1wok4ySkniu8" />
 		
 		<activity
 			android:name="com.tns.NativeScriptActivity"
@@ -33,6 +38,11 @@
 			<meta-data android:name="SET_THEME_ON_LAUNCH" android:resource="@style/AppTheme" />
 
 			<intent-filter>
+				<!-- <data android:scheme="crazee" />
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" /> -->
+				<!-- <data android:scheme="crazee" /> -->
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>

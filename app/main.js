@@ -2,10 +2,20 @@ import VueDevtools from 'nativescript-vue-devtools'
 import Vue from 'nativescript-vue'
 import App from './components/App'
 
+import * as platform from 'platform'
+
+import { handleOpenURL } from 'nativescript-urlhandler';
+
+if (platform.isIOS) { 
+  GMSServices.provideAPIKey("AIzaSyBpGZdpD4kaH1T5ZMZFyZL1wok4ySkniu8")
+}
+
 
 import store from './store'
 
-var firebase = require("nativescript-plugin-firebase");
+var firebase = require("nativescript-plugin-firebase")
+var SocialShare = require("nativescript-social-share")
+var imageSourceModule = require("tns-core-modules/image-source")
 
 firebase.init({
 
@@ -26,6 +36,9 @@ Vue.use(VueDevtools, { host: '192.168.1.147' })
 
 // Prints Vue logs when --env.production is *NOT* set while building
 Vue.config.silent = (TNS_ENV === 'production')
+
+Vue.registerElement('MapView', ()=> require('nativescript-google-maps-sdk').MapView)
+Vue.registerElement('SwipeCard', () => require('nativescript-swipe-card').SwipeCard)
 
 new Vue({
     store,

@@ -36,8 +36,12 @@
             </GridLayout> 
 
             <StackLayout class="form-login" marginTop="40">
-                <TextField v-model="user.email" class="input-form" hint="Correo electronico" />
-                <TextField v-model="user.password" class="input-form" hint="Contraseña" />
+                <TextField v-model="user.email" class="input-form" hint="Correo electronico" keyboardType="email" />
+                <TextField ref="pw" v-model="user.password" class="input-form" hint="Contraseña" secure="true" />
+
+                <GridLayout columns="*, *" rows="40">
+                    <Label col="0" row="0" marginLeft="20" class="forget-password" text="Ver/Ocultar" @tap="showHidePassword" />
+                </GridLayout>
                 
                 <Button marginTop="50" class="btn-login" text="REGISTRARSE" @tap="createUser" />
 
@@ -46,7 +50,7 @@
 
                     <StackLayout orientation="horizontal" horizontalAlignment="center">
                         <Image margin="10" src="~/assets/images/google.png" @tap="loginGoogle" stretch="none" />
-                        <Image margin="10" src="~/assets/images/facebook.png" @tap="loginFacebook" stretch="none" />
+                        <!-- <Image margin="10" src="~/assets/images/facebook.png" @tap="loginFacebook" stretch="none" /> -->
                     </StackLayout>
                 </StackLayout>
                 
@@ -57,7 +61,16 @@
 </template>
 
 <script>
+    //Firebase
 const firebase = require("nativescript-plugin-firebase")
+
+//Vuex
+import { store } from 'vuex'
+
+//Pages
+import Register from './Register.vue'
+import Inicio from '../App.vue'
+import Home from '../Home.vue'
 import Login from './Login.vue'
 
 export default {
@@ -68,6 +81,7 @@ export default {
             user: {
                 email: '',
                 password: '',
+                uid: '',
             }
         }
     },
@@ -89,16 +103,26 @@ export default {
                 })
 
                 if(response){
-                    // let user = {
-                    //     email: this.user.email,
-                    //     password: this.user.password,
-                    //     uid: response.uid
-                    // }
-                    // firebase.collection('usuarios').doc(response.uid).set(user)
+                    if(response.additionalUserInfo.isNewUser){
+                        let user = {
+                            uid: response.uid,
+                            index: '4NiIMY23iJB4teAc86q1',
+                            nombre: 'User-' + response.uid
+                        }
+
+                        firebase.firestore.collection('usuarios').doc(user.uid).set(user)
+                    }
+
+                    this.user.uid = response.uid
+
+                    this.$store.commit('updateUser', this.user)
+                    this.$navigateTo(Inicio)
+
                 }
             } catch(e) {
                 console.log(e);
             }
+
         },
 
         async loginGoogle(){
@@ -108,7 +132,22 @@ export default {
                 })
 
                 if(response){
-                    console.log(JSON.stringify(response))
+                    console.log(JSON.stringify(response.additionalUserInfo.isNewUser))
+
+                    if(response.additionalUserInfo.isNewUser){
+                        let user = {
+                            uid: response.uid,
+                            index: '4NiIMY23iJB4teAc86q1',
+                            nombre: response.displayName
+                        }
+
+                        firebase.firestore.collection('usuarios').doc(user.uid).set(user)
+                    }
+                    
+                    this.user.uid = response.uid
+
+                    this.$store.commit('updateUser', this.user)
+                    this.$navigateTo(Inicio)
                 }
             }
             catch(e){
@@ -134,6 +173,11 @@ export default {
                 console.log(e)
             }
         },
+
+        showHidePassword(){
+            console.log(this.$refs.pw.nativeView.secure)
+            this.$refs.pw.nativeView.secure= !this.$refs.pw.nativeView.secure
+        }
     },
 }
 </script>

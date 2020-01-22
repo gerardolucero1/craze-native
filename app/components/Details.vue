@@ -102,13 +102,14 @@
                         <GridLayout columns="*, *" rows="60">
                             <FlexboxLayout col="0" row="0" justifyContent="flex-start" alignItems="center">
                                 <Label class="precio" :text="'$' + garment.precio" />
+                                <Image src="https://cdn2.iconfinder.com/data/icons/pittogrammi/142/80-512.png" width="20" height="20" marginTop="1" marginLeft="10" stretch="aspectFill" @tap="like" />
                             </FlexboxLayout>
 
-                            <FlexboxLayout col="1" row="0" justifyContent="space-around" marginRight="-10">
-                                <Image class="btn-options" src="~/assets/images/icono1.png" />
-                                <Image class="btn-options" src="~/assets/images/icono2.png" />
-                                <Image class="btn-options" src="~/assets/images/icono3.png" />
-                                <Image class="btn-options" src="~/assets/images/icono4.png" />
+                            <FlexboxLayout col="1" row="0" justifyContent="space-around" marginRight="">
+                                <Image class="btn-options" src="~/assets/images/icono1.png" @tap="waitForIt" />
+                                <Image class="btn-options" src="~/assets/images/icono2.png" @tap="waitForIt" />
+                                <Image class="btn-options" src="~/assets/images/icono3.png" @tap="goToNavigation" />
+                                <Image class="btn-options" src="~/assets/images/icono4.png" @tap="shareClothes" />
                             </FlexboxLayout>
                         </GridLayout>
 
@@ -139,10 +140,21 @@
                             <StackLayout class="box">
                                 <Label fontSize="13" text="DIRECCION DE RECOLECCION" @tap="changeControl(3)" />
                                 <StackLayout v-if="control == 3">
-                                    <TextView margin="0" editable="false" text="boutique.direccion" />
+                                    <TextView margin="0" editable="false" :text="boutique.direccion" />
+                                </StackLayout>
+                            </StackLayout>
+
+                            <StackLayout marginTop="20" marginBottom="20" class="separator-line" />
+
+                            <StackLayout marginTop="10" class="box">
+                                <Label fontSize="13" text="DEJA UN COMENTARIO" />
+                                <StackLayout>
+                                    <TextView margin="0" height="100" autocorrect="true" editable="true" v-model="comment" />
                                 </StackLayout>
                             </StackLayout>
                         </StackLayout>
+
+                        <Button backgroundColor="black" color="white" width="100%" text="ENVIAR" @tap="sendComment" />
                     </StackLayout>
                 </WrapLayout>
                     
@@ -157,10 +169,10 @@
                         <Image class="btn-navigation" src="~/assets/images/gancho.png" width="50" @tap="goToCloset" />
                     </FlexboxLayout>
                     <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="2">
-                        <Image class="btn-navigation" src="~/assets/images/tiendas.png" />
+                        <Image class="btn-navigation" src="~/assets/images/tiendas.png" @tap="goToMap" />
                     </FlexboxLayout>
                     <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="3">
-                        <Image class="btn-navigation" src="~/assets/images/config.png" />
+                        <Image class="btn-navigation" src="~/assets/images/config.png" @tap="goToSettings" />
                     </FlexboxLayout>
                 </GridLayout>
             </StackLayout>
@@ -172,12 +184,53 @@
 //Firebase
 const firebase = require("nativescript-plugin-firebase")
 
+//Social Share
+const SocialShare = require("nativescript-social-share")
+const imageSourceModule = require("tns-core-modules/image-source")
+
+//Toast
+const toast = require('nativescript-toasts')
+
+//Loader
+const LoadingIndicator = require('@nstudio/nativescript-loading-indicator').LoadingIndicator;
+const Mode = require('@nstudio/nativescript-loading-indicator').Mode;
+const loader = new LoadingIndicator();
+
+const options = {
+    message: 'Cargando...',
+    details: 'Esperando respuesta',
+    progress: 0.65,
+    margin: 10,
+    dimBackground: true,
+    color: '#4B9ED6', // color of indicator and labels
+    // background box around indicator
+    // hideBezel will override this if true
+    backgroundColor: 'white',
+    userInteractionEnabled: false, // default true. Set false so that the touches will fall through it.
+    hideBezel: true, // default false, can hide the surrounding bezel
+    mode: Mode.AnnularDeterminate, // see options below
+    // android: {
+    //     view: android.view.View, // Target view to show on top of (Defaults to entire window)
+    //     cancelable: true,
+    //     cancelListener: function(dialog) {
+    //         console.log('Loading cancelled');
+    //     }
+    // },
+    // ios: {
+    //     view: UIView // Target view to show on top of (Defaults to entire window)
+    // }
+};
+
 //Vuex
-import { store } from 'vuex'
+import { mapState } from 'vuex'
 
 //Pages
 import Home from './Home.vue'
 import Closet from './Closet.vue'
+import Mapa from './Map.vue'
+import Details from './Details.vue'
+import Settings from './Settings.vue'
+import Navigation from './Navigation.vue'
 
 export default {
     name: 'Details',
@@ -188,6 +241,7 @@ export default {
 
     data(){
         return{
+            comment: '',
         	garment: null,
             boutique: null,
             control: 1,
@@ -195,6 +249,11 @@ export default {
     },
 
     computed:{
+
+        ...mapState([
+                'user'
+            ]),
+
         changeTitle(){
             let title = 'Craze'
 
@@ -217,6 +276,44 @@ export default {
 
         goToCloset(){
             this.$navigateTo(Closet)
+        },
+
+        goToMap(){
+            this.$navigateTo(Mapa)
+        },
+
+        goToSettings(){
+            this.$navigateTo(Settings)
+        },
+
+        goToNavigation(){
+            this.$navigateTo(Navigation, {
+                props:{
+                    id: this.boutique.id,
+                }
+            })
+        },
+
+        shareClothes(){
+            loader.show(options)
+            // let image = imageSourceModule.fromFile("~/assets/images/icono1.png");
+            imageSourceModule.fromUrl(this.garment.foto).then(image => {
+                SocialShare.shareImage(image, 'CRAZE Fashion Soul', 'How would you like to share this?')
+
+                loader.hide()
+            })
+            
+        },
+
+        waitForIt(){
+            alert(
+                {
+                    title: "CRAZE",
+                    message: "Proximamente",
+                    okButtonText: "ACEPTAR"
+                }).then(() => {
+                    console.log("Alert dialog closed");
+                })
         },
 
         changeControl(id){
@@ -254,7 +351,66 @@ export default {
                 // statements
                 console.log(e);
             }
+        },
+
+        async like(){
+            try {
+
+                let response = await firebase.firestore.collection('likes')
+                                                        .doc(this.user.uid)
+                                                        .collection('like')
+                                                        .doc(this.garment.id)
+                                                        .set(this.garment)
+
+                this.$store.commit('updateIndex', this.garment.id)
+            } catch(e) {
+                console.log(e);
+            }
+            finally{
+                var options = {
+                    text: "Me Gusta",
+                    duration : toast.DURATION.SHORT,
+                    position : toast.POSITION.BOTTOM //optional
+                }
+                toast.show(options)
+            }
+        },
+
+        async sendComment(){
+            if(this.comment == ''){
+                return
+            }
+
+            try{
+                let hoy = new Date()
+
+                let comm = {
+                    boutique: this.boutique.id,
+                    comentario: this.comment,
+                    nombre: this.user.nombre,
+                    usuario: this.user.uid,
+                    fecha: hoy.toLocaleDateString("en-US"),
+                    rate: 5
+                }
+                let response = await firebase.firestore.collection('comentarios')
+                                                        .doc()
+                                                        .set(comm)
+            }
+            catch(e){
+                console.log(e)
+            }
+            finally{
+                this.comment = ''
+
+                var options = {
+                    text: "Comentario Enviado",
+                    duration : toast.DURATION.SHORT,
+                    position : toast.POSITION.BOTTOM //optional
+                }
+                toast.show(options)
+            }
         }
+
     },
 }
 </script>

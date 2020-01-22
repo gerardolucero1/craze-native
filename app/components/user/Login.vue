@@ -36,12 +36,13 @@
             </GridLayout> 
 
             <StackLayout class="form-login" marginTop="40">
-                <TextField v-model="user.email" class="input-form" :text="user.email" hint="Correo electronico" />
-                <TextField v-model="user.password" class="input-form" :text="user.password" hint="Contraseña" />
+                <TextField v-model="user.email" class="input-form" :text="user.email" hint="Correo electronico" keyboardType="email" />
+                <TextField ref="pw" v-model="user.password" class="input-form" :text="user.password" secure="true" hint="Contraseña" />
 
-                <FlexboxLayout justifyContent="flex-end">
-                    <Label marginRight="20" class="forget-password" text="¿Olvistate tu contraseña?" />
-                </FlexboxLayout>
+                <GridLayout columns="*, *" rows="40">
+                    <Label col="0" row="0" marginLeft="20" class="forget-password" text="Ver/Ocultar" @tap="showHidePassword" />
+                    <Label col="1" row="0" horizontalAlignment="right" marginRight="20" class="forget-password" text="¿Olvistate tu contraseña?" />
+                </GridLayout>
                 
                 <Button marginTop="50" class="btn-login" text="ENTRAR" @tap="loginEmail" />
 
@@ -50,7 +51,7 @@
 
                     <StackLayout orientation="horizontal" horizontalAlignment="center">
                         <Image margin="10" src="~/assets/images/google.png" @tap="loginGoogle" stretch="none" />
-                        <Image margin="10" src="~/assets/images/facebook.png" @tap="loginFacebook" stretch="none" />
+                        <!-- <Image margin="10" src="~/assets/images/facebook.png" @tap="loginFacebook" stretch="none" /> -->
                     </StackLayout>
                 </StackLayout>
                 
@@ -67,8 +68,12 @@ const firebase = require("nativescript-plugin-firebase")
 //Vuex
 import { store } from 'vuex'
 
+//Toast
+const toast = require('nativescript-toasts')
+
 //Pages
 import Register from './Register.vue'
+import Inicio from '../App.vue'
 import Home from '../Home.vue'
 
 
@@ -109,11 +114,39 @@ export default {
                     this.user.uid = response.uid
 
                     this.$store.commit('updateUser', this.user)
-                    this.$navigateTo(Home)
+                    this.$navigateTo(Inicio)
                 }
             } catch(e) {
                 // statements
-                console.log(e);
+                if(e == 'Logging in the user failed. com.google.firebase.auth.FirebaseAuthInvalidUserException: There is no user record corresponding to this identifier. The user may have been deleted.'){
+
+                    console.log('USUARIO NO EXISTE')
+
+                    var options = {
+                        text: "USUARIO NO EXISTE",
+                        duration : toast.DURATION.SHORT,
+                        position : toast.POSITION.BOTTOM //optional
+                    }
+                    toast.show(options)
+                }else if(e == 'Logging in the user failed. com.google.firebase.FirebaseTooManyRequestsException: We have blocked all requests from this device due to unusual activity. Try again later. [ Too many unsuccessful login attempts. Please try again later. ]'){
+                    console.log('INTENTA MAS TARDE')
+
+                    var options = {
+                        text: "INTENTA MAS TARDE",
+                        duration : toast.DURATION.SHORT,
+                        position : toast.POSITION.BOTTOM //optional
+                    }
+                    toast.show(options)
+                }else{
+                    console.log('CONTRASEÑA INCORRECTA')
+
+                    var options = {
+                        text: "CONTRASEÑA INCORRECTA",
+                        duration : toast.DURATION.SHORT,
+                        position : toast.POSITION.BOTTOM //optional
+                    }
+                    toast.show(options)
+                }
             }
         },
 
@@ -124,11 +157,22 @@ export default {
                 })
 
                 if(response){
-                    console.log(JSON.stringify(response))
+                    console.log(JSON.stringify(response.additionalUserInfo.isNewUser))
+
+                    if(response.additionalUserInfo.isNewUser){
+                        let user = {
+                            uid: response.uid,
+                            index: '4NiIMY23iJB4teAc86q1',
+                            nombre: response.displayName
+                        }
+
+                        firebase.firestore.collection('usuarios').doc(user.uid).set(user)
+                    }
+                    
                     this.user.uid = response.uid
 
                     this.$store.commit('updateUser', this.user)
-                    this.$navigateTo(Home)
+                    this.$navigateTo(Inicio)
                 }
             }
             catch(e){
@@ -151,13 +195,18 @@ export default {
                     this.user.uid = response.uid
 
                     this.$store.commit('updateUser', this.user)
-                    this.$navigateTo(Home)
+                    this.$navigateTo(Inicio)
                 }
             }
             catch(e){
                 console.log(e)
             }
         },
+
+        showHidePassword(){
+            console.log(this.$refs.pw.nativeView.secure)
+            this.$refs.pw.nativeView.secure= !this.$refs.pw.nativeView.secure
+        }
     },
 }
 </script>

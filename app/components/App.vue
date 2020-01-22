@@ -1,10 +1,9 @@
 <style scoped>
     .page{
-        align-items: center;
-        flex-direction: column;
         background-image: url('~/assets/images/fondo.png');
-        background-position: center;
+        background-position: center top;
         background-size: cover;
+        background-repeat: no-repeat;
     }
 
     .bloque{
@@ -21,20 +20,22 @@
 
 <template>
     <Page actionBarHidden="true">
-		<FlexboxLayout class="page">
-            <StackLayout>
-                <Button class="btn-inicio" text="INICIAR SESION" @tap="goToLogin" />
-            </StackLayout>
+        <GridLayout class="page" rows="2*, *">
+            <StackLayout row="1">
+                <StackLayout>
+                    <Button class="btn-inicio" text="INICIAR SESION" @tap="goToLogin" />
+                </StackLayout>
 
-            <StackLayout orientation="horizontal">
-                <StackLayout class="bloque">
-                    <Image src="~/assets/images/google.png" stretch="none" />
-                </StackLayout>
-                <StackLayout class="bloque">
-                    <Image src="~/assets/images/facebook.png" stretch="none" />
-                </StackLayout>
+                <!-- <StackLayout horizontalAlignment="center" orientation="horizontal">
+                    <StackLayout class="bloque">
+                        <Image src="~/assets/images/google.png" stretch="none" />
+                    </StackLayout>
+                    <StackLayout class="bloque">
+                        <Image src="~/assets/images/facebook.png" stretch="none" />
+                    </StackLayout>
+                </StackLayout> -->
             </StackLayout>
-        </FlexboxLayout>
+        </GridLayout>
 	</Page>
 </template>
 

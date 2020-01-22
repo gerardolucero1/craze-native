@@ -55,7 +55,18 @@
             <StackLayout row="0">
                 <!-- <WrapLayout orientation="vertical"> -->
                     <StackLayout v-if="clothes.length != 0" class="banner">
-                        <Image class="imagen" margin="20" android:borderRadius="20" androidElevation="5" android:backgroundColor="white" :src="clothes[0].foto" stretch="aspectFill" @tap="goToDetails(clothes[0].id)" />
+                        <!-- <SwipeCard
+                            marginTop="-30"
+                            height="100%"
+                            width="100%" 
+                            :items="stackCards"
+                            @swipeEvent="swipeEvent($event)"
+                            cardHeight="60" 
+                            cardWidth="80"
+                            isRandomColor="1"
+                            >
+                        </SwipeCard> --> 
+                        <Image class="imagen" margin="20" android:borderRadius="20" androidElevation="5" android:backgroundColor="white" :src="clothes[0].foto" stretch="aspectFill" @doubleTap="maybeLater" @tap="goToDetails(clothes[0].id)" @swipe="onSwipe($event)" />
                     </StackLayout>
                 
                     <FlexboxLayout marginTop="-10" justifyContent="space-around">
@@ -77,7 +88,7 @@
                         <Image class="btn-navigation" src="~/assets/images/tiendas.png" @tap="goToMap" />
                     </FlexboxLayout>
                     <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="3">
-                        <Image class="btn-navigation" src="~/assets/images/config.png" />
+                        <Image class="btn-navigation" src="~/assets/images/config.png" @tap="goToSettings" />
                     </FlexboxLayout>
                 </GridLayout>
             </StackLayout>
@@ -92,11 +103,21 @@ const firebase = require("nativescript-plugin-firebase")
 //Vuex
 import { mapState } from 'vuex'
 
+//Toast
+const toast = require('nativescript-toasts')
+
+//Swipe Cards
+import { StackLayout } from 'tns-core-modules/ui/layouts/stack-layout'
+import { Image } from 'tns-core-modules/ui/image'
+import { SwipeEvent } from 'nativescript-swipe-card'
+
 //Pages
 import Home from './Home.vue'
 import Closet from './Closet.vue'
 import Mapa from './Map.vue'
+import Navigation from './Navigation.vue'
 import Details from './Details.vue'
+import Settings from './Settings.vue'
 
 
 export default {
@@ -106,6 +127,7 @@ export default {
         return{
         	clothes: [], 
             last: null,
+            stackCards: []
         }
     },
 
@@ -134,6 +156,10 @@ export default {
         }
     },
 
+    created(){
+
+    },
+
     mounted() {
         this.getClothes()
     },
@@ -155,6 +181,10 @@ export default {
             this.$navigateTo(Mapa)
         },
 
+        goToSettings(){
+            this.$navigateTo(Settings)
+        },
+
         async getClothes(){
             try {
                 let response = await firebase.firestore.collection('prendas')
@@ -166,7 +196,9 @@ export default {
                                                     query.forEach(doc => {
                                                         this.clothes.push(doc.data())
                                                     })
-                                                    
+                                                
+                                                //Llamamos el metodo que creara los layouts de las cards
+                                                this.makeStack()
                                                 })
                 if(response){
                     console.log(this.clothes)
@@ -187,6 +219,8 @@ export default {
                                                     query.forEach(doc => {
                                                         this.clothes.push(doc.data())
                                                     })
+                                                //Llamamos el metodo que creara los layouts de las cards
+                                                this.makeStack()
                                                 })
             } catch(e) {
                 console.log(e);
@@ -195,6 +229,7 @@ export default {
 
         async like(){
             try {
+
                 let response = await firebase.firestore.collection('likes')
                                         .doc(this.user.uid)
                                         .collection('like')
@@ -205,6 +240,14 @@ export default {
                 this.clothes.splice(0, 1)
             } catch(e) {
                 console.log(e);
+            }
+            finally{
+                var options = {
+                    text: "Me Gusta",
+                    duration : toast.DURATION.SHORT,
+                    position : toast.POSITION.BOTTOM //optional
+                }
+                toast.show(options)
             }
         },
 
@@ -221,7 +264,89 @@ export default {
             } catch(e) {
                 console.log(e);
             }
+            finally{
+                var options = {
+                    text: "No me Gusta",
+                    duration : toast.DURATION.SHORT,
+                    position : toast.POSITION.BOTTOM //optional
+                }
+                toast.show(options)
+            }
+        },
+
+        maybeLater(){
+            this.$store.commit('updateIndex', this.clothes[1].id)
+            this.clothes.splice(0, 1)
+
+            var options = {
+                text: "Quiza luego",
+                duration : toast.DURATION.SHORT,
+                position : toast.POSITION.BOTTOM //optional
+            }
+            toast.show(options)
+        },
+
+        onSwipe(args){
+            console.log(args.direction)
+            if (args.direction === 1) {
+                this.disLike()
+                
+            } else {
+                //left
+                this.like()
+            }
+        },
+
+        swipeEvent(args){
+            //Obtenemos el indice de la tarjeta
+            let index = args.cardIndex
+            //Buscamos el elemento correspondiente a ese indice en el array de ropa
+            let element = this.clothes[index]
+            //Eliminamos esa prenda de el array original para reducirlo
+            this.clothes.splice(index, 1)
+
+            if (args.direction === 1) {
+                
+                console.log(element.id);
+            } else {
+                //left
+                console.log(element.id);
+            }
+        },
+
+        makeStack(){
+            this.clothes.forEach((element) => {
+                let stack = new StackLayout()
+                let image = new Image()
+
+                //Creamos la imagen
+                image.src = element.foto
+                image.height = 500
+                image.width = 500
+                image.borderRadius = 15
+                image.stretch = "aspectFill"
+
+
+                //Creamos el stack
+                stack.verticalAlignment = 'center'
+                stack.addChild(image)
+
+                //Metemos el stack al array de tarjetas
+                this.stackCards.push(stack)
+            })
+            
+            this.$forceUpdate()
         }
+ 
     },
 }
 </script>
+
+
+
+
+
+
+
+
+
