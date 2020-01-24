@@ -18,7 +18,16 @@ var SocialShare = require("nativescript-social-share")
 var imageSourceModule = require("tns-core-modules/image-source")
 
 firebase.init({
+    showNotifications: true,
+    showNotificationsWhenInForeground: true,
 
+    onPushTokenReceivedCallback: (token) => {
+        console.log('[Firebase] onPushTokenReceivedCallback:', { token });
+    },
+
+    onMessageReceivedCallback: (message) => {
+        console.log('[Firebase] onMessageReceivedCallback:', { message });
+    }
 }).then(
     function() {
         console.log("firebase.init done")
@@ -38,7 +47,6 @@ Vue.use(VueDevtools, { host: '192.168.1.147' })
 Vue.config.silent = (TNS_ENV === 'production')
 
 Vue.registerElement('MapView', ()=> require('nativescript-google-maps-sdk').MapView)
-Vue.registerElement('SwipeCard', () => require('nativescript-swipe-card').SwipeCard)
 
 new Vue({
     store,
