@@ -23,6 +23,7 @@ firebase.init({
 
     onPushTokenReceivedCallback: (token) => {
         console.log('[Firebase] onPushTokenReceivedCallback:', { token });
+        store.commit('updateToken', token)
     },
 
     onMessageReceivedCallback: (message) => {

@@ -127,7 +127,7 @@ export default {
         return{
         	clothes: [], 
             last: null,
-            stackCards: []
+            settings: null,
         }
     },
 
@@ -161,7 +161,7 @@ export default {
     },
 
     mounted() {
-        this.getClothes()
+        this.getSettings()
     },
 
     methods: {
@@ -185,9 +185,26 @@ export default {
             this.$navigateTo(Settings)
         },
 
+        async getSettings(){
+            try{
+                let response = await firebase.firestore.collection('configuraciones')
+                                                        .doc(this.user.uid)
+                                                        .get()
+
+                if(response.exists){
+                    this.settings = response.data().categorias
+                    this.getClothes()
+                }
+            }
+            catch(e){
+                console.log(e)
+            }
+        },
+
         async getClothes(){
             try {
                 let response = await firebase.firestore.collection('prendas')
+                                                .where('categoria', 'in', this.settings)
                                                 .orderBy('id')
                                                 .limit(4)
                                                 .startAt(this.user.index)
@@ -196,9 +213,15 @@ export default {
                                                     query.forEach(doc => {
                                                         this.clothes.push(doc.data())
                                                     })
+
+                                                Array.prototype.unique=function(a){
+                                                    return function(){return this.filter(a)}}(function(a,b,c){return c.indexOf(a,b+1)<0
+                                                })
+
+                                                this.clothes.unique()
                                                 
                                                 //Llamamos el metodo que creara los layouts de las cards
-                                                this.makeStack()
+                                                //this.makeStack()
                                                 })
                 if(response){
                     console.log(this.clothes)
@@ -211,6 +234,7 @@ export default {
         async nextClothes(){
             try {
                 let response = await firebase.firestore.collection('prendas')
+                                                .where('categoria', 'in', this.settings)
                                                 .orderBy('id')
                                                 .limit(4)
                                                 .startAfter(this.last)
@@ -219,8 +243,13 @@ export default {
                                                     query.forEach(doc => {
                                                         this.clothes.push(doc.data())
                                                     })
+                                                Array.prototype.unique=function(a){
+                                                    return function(){return this.filter(a)}}(function(a,b,c){return c.indexOf(a,b+1)<0
+                                                })
+
+                                                this.clothes.unique()
                                                 //Llamamos el metodo que creara los layouts de las cards
-                                                this.makeStack()
+                                                //this.makeStack()
                                                 })
             } catch(e) {
                 console.log(e);

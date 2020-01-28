@@ -15,15 +15,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "999017124538-hhu2tgct4oo912frfl0lomqnntjp07l6.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.partnergrammer.craze",
-            "certificate_hash": "00546b1fc3ac7a6b7155840509e7537fb72a186c"
-          }
-        },
-        {
-          "client_id": "999017124538-4j81d6uq01q6sem8e6eqfonbfunphbuq.apps.googleusercontent.com",
+          "client_id": "999017124538-8g0p2npnj34lv3gvt5rgcq0js1cg1hcv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.partnergrammer.craze",
@@ -46,6 +38,13 @@
             {
               "client_id": "999017124538-5gklu54efaaejh8a1gnojrll1g8gpado.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "999017124538-baahup9il0oivc9hv5iusb1hjup94va3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.partnergrammer.craze"
+              }
             }
           ]
         }

@@ -74,7 +74,7 @@
                     <StackLayout class="banner">
                         <StackLayout marginBottom="-10" orientation="horizontal">
                             <FlexboxLayout justifyContent="flex-start" alignItems="center" >
-                                <Switch @checkedChange="addCategory('sueteres')" v-model="categorias.sueteres" />
+                                <Switch @checkedChange="addCategory('Sueteres')" v-model="categorias.Sueteres" />
                             </FlexboxLayout>
                             <FlexboxLayout justifyContent="center" alignItems="center" >
                                 <Label marginLeft="20" marginTop="11" text="Sueteres" />
@@ -83,7 +83,7 @@
 
                         <StackLayout marginBottom="-10" orientation="horizontal">
                             <FlexboxLayout justifyContent="flex-start" alignItems="center" >
-                                <Switch @checkedChange="addCategory('blusas')" v-model="categorias.blusas" />
+                                <Switch @checkedChange="addCategory('Blusas')" v-model="categorias.Blusas" />
                             </FlexboxLayout>
                             <FlexboxLayout justifyContent="center" alignItems="center" >
                                 <Label marginLeft="20" marginTop="11" text="Blusas" />
@@ -92,7 +92,7 @@
 
                         <StackLayout marginBottom="-10" orientation="horizontal">
                             <FlexboxLayout justifyContent="flex-start" alignItems="center" >
-                                <Switch @checkedChange="addCategory('camisetas')" v-model="categorias.camisetas" />
+                                <Switch @checkedChange="addCategory('Camisetas')" v-model="categorias.Camisetas" />
                             </FlexboxLayout>
                             <FlexboxLayout justifyContent="center" alignItems="center" >
                                 <Label marginLeft="20" marginTop="11" text="Camisetas" />
@@ -101,7 +101,7 @@
 
                         <StackLayout marginBottom="-10" orientation="horizontal">
                             <FlexboxLayout justifyContent="flex-start" alignItems="center" >
-                                <Switch @checkedChange="addCategory('chamarras')" v-model="categorias.chamarras" />
+                                <Switch @checkedChange="addCategory('Chamarras')" v-model="categorias.Chamarras" />
                             </FlexboxLayout>
                             <FlexboxLayout justifyContent="center" alignItems="center" >
                                 <Label marginLeft="20" marginTop="11" text="Chamarras" />
@@ -110,7 +110,7 @@
 
                         <StackLayout marginBottom="-10" orientation="horizontal">
                             <FlexboxLayout justifyContent="flex-start" alignItems="center" >
-                                <Switch @checkedChange="addCategory('vestidos')" v-model="categorias.vestidos" />
+                                <Switch @checkedChange="addCategory('Vestidos')" v-model="categorias.Vestidos" />
                             </FlexboxLayout>
                             <FlexboxLayout justifyContent="center" alignItems="center" >
                                 <Label marginLeft="20" marginTop="11" text="Vestidos" />
@@ -119,7 +119,7 @@
 
                         <StackLayout marginBottom="-10" orientation="horizontal">
                             <FlexboxLayout justifyContent="flex-start" alignItems="center" >
-                                <Switch @checkedChange="addCategory('pantalones')" v-model="categorias.pantalones" />
+                                <Switch @checkedChange="addCategory('Pantalones')" v-model="categorias.Pantalones" />
                             </FlexboxLayout>
                             <FlexboxLayout justifyContent="center" alignItems="center" >
                                 <Label marginLeft="20" marginTop="11" text="Pantalones" />
@@ -128,7 +128,7 @@
 
                         <StackLayout marginBottom="-10" orientation="horizontal">
                             <FlexboxLayout justifyContent="flex-start" alignItems="center" >
-                                <Switch @checkedChange="addCategory('shorts')" v-model="categorias.shorts" />
+                                <Switch @checkedChange="addCategory('Shorts')" v-model="categorias.Shorts" />
                             </FlexboxLayout>
                             <FlexboxLayout justifyContent="center" alignItems="center" >
                                 <Label marginLeft="20" marginTop="11" text="Shorts" />
@@ -137,7 +137,7 @@
 
                         <StackLayout marginBottom="-10" orientation="horizontal">
                             <FlexboxLayout justifyContent="flex-start" alignItems="center" >
-                                <Switch @checkedChange="addCategory('sacos')" v-model="categorias.sacos" />
+                                <Switch @checkedChange="addCategory('Sacos')" v-model="categorias.Sacos" />
                             </FlexboxLayout>
                             <FlexboxLayout justifyContent="center" alignItems="center" >
                                 <Label marginLeft="20" marginTop="11" text="Sacos" />
@@ -146,7 +146,7 @@
 
                         <StackLayout marginBottom="-10" orientation="horizontal">
                             <FlexboxLayout justifyContent="flex-start" alignItems="center" >
-                                <Switch @checkedChange="addCategory('zapatos')" v-model="categorias.zapatos" />
+                                <Switch @checkedChange="addCategory('Zapatos')" v-model="categorias.Zapatos" />
                             </FlexboxLayout>
                             <FlexboxLayout justifyContent="center" alignItems="center" >
                                 <Label marginLeft="20" marginTop="11" text="Zapatos" />
@@ -155,7 +155,7 @@
 
                         <StackLayout marginBottom="-10" orientation="horizontal">
                             <FlexboxLayout justifyContent="flex-start" alignItems="center" >
-                                <Switch @checkedChange="addCategory('botas')" v-model="categorias.botas" />
+                                <Switch @checkedChange="addCategory('Botas')" v-model="categorias.Botas" />
                             </FlexboxLayout>
                             <FlexboxLayout justifyContent="center" alignItems="center" >
                                 <Label marginLeft="20" marginTop="11" text="Botas" />
@@ -171,6 +171,7 @@
 
                         <StackLayout>
                             <Button class="btn-save" text="GUARDAR CONFIGURACION" @tap="saveSettings" />
+                            <Button class="btn-close" text="VER TOKEN" @tap="viewToken" />
                             <Button class="btn-close" text="CERRAR SESION" @tap="closeSesion" />
                         </StackLayout>
                     </StackLayout>
@@ -223,16 +224,16 @@ export default {
     data(){
         return{
             categorias: {
-                sueteres: false,
-                blusas: false,
-                camisetas: false,
-                chamarras: false,
-                vestidos: false,
-                pantalones: false,
-                shorts: false,
-                sacos: false,
-                zapatos: false,
-                botas: false,
+                Sueteres: false,
+                Blusas: false,
+                Camisetas: false,
+                Chamarras: false,
+                Vestidos: false,
+                Pantalones: false,
+                Shorts: false,
+                Sacos: false,
+                Zapatos: false,
+                Botas: false,
             },
             seleccion: [],
             range: 0,
@@ -241,7 +242,8 @@ export default {
 
     computed:{
         ...mapState([
-            'user'
+            'user',
+            'token'
         ]),
 
         changeTitle(){
@@ -289,6 +291,18 @@ export default {
                     })
                 }
             }
+        },
+
+        viewToken(){
+            prompt({
+                title: "TOKEN",
+                message: "Este es tu user token, no lo compartas con nadie",
+                okButtonText: "OK",
+                cancelButtonText: "CANCEL",
+                defaultText: this.token,
+            }).then(result => {
+                console.log(`Dialog result: ${result.result}, text: ${result.text}`)
+            });
         },
 
         async getCategories(){

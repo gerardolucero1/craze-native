@@ -146,15 +146,21 @@
 
                             <StackLayout marginTop="20" marginBottom="20" class="separator-line" />
 
-                            <StackLayout marginTop="10" class="box">
+                            <StackLayout v-if="!exists" marginTop="10" class="box">
                                 <Label fontSize="13" text="DEJA UN COMENTARIO" />
                                 <StackLayout>
                                     <TextView margin="0" height="100" autocorrect="true" editable="true" v-model="comment" />
                                 </StackLayout>
                             </StackLayout>
+                            <StackLayout v-else marginTop="10" class="box">
+                                <StackLayout>
+                                    <TextView margin="0" height="100" autocorrect="true" editable="false" :text="comment" />
+                                </StackLayout>
+                            </StackLayout>
+
                         </StackLayout>
 
-                        <Button backgroundColor="black" color="white" width="100%" text="ENVIAR" @tap="sendComment" />
+                        <Button v-if="!exists" backgroundColor="black" color="white" width="100%" text="ENVIAR" @tap="sendComment" />
                     </StackLayout>
                 </WrapLayout>
                     
@@ -245,6 +251,7 @@ export default {
         	garment: null,
             boutique: null,
             control: 1,
+            exists: false,
         }
     },
 
@@ -267,6 +274,7 @@ export default {
 
     mounted() {
         this.getGarment()
+        this.getComment()
     },
 
     methods: {
@@ -318,6 +326,41 @@ export default {
 
         changeControl(id){
             this.control = id
+        },
+
+        async getComment(){
+            try{
+                let comm = []
+                // let comm = {
+                //     boutique: this.boutique.id,
+                //     comentario: this.comment,
+                //     nombre: this.user.nombre,
+                //     usuario: this.user.uid,
+                //     fecha: hoy.toLocaleDateString("en-US"),
+                //     rate: 5
+                // }
+                let response = await firebase.firestore.collection('comentarios')
+                                                        .where('usuario', '==', this.user.uid)
+                                                        .where('boutique', '==', this.boutique.id)
+                                                        .get()
+                                                        .then((querySnapshot) => {
+                                                            querySnapshot.forEach(doc => {
+                                                                // doc.data() is never undefined for query doc snapshots
+                                                                if(doc.exists){
+                                                                    this.comment = doc.data().comentario
+                                                                    this.exists = true
+                                                                }
+                                                                
+                                                            });
+                                                        })
+                                                        .catch(function(error) {
+                                                            console.log("Error getting documents: ", error);
+                                                        });
+
+            }
+            catch(e){
+
+            }
         },
 
         async getGarment(){
@@ -395,12 +438,12 @@ export default {
                 let response = await firebase.firestore.collection('comentarios')
                                                         .doc()
                                                         .set(comm)
+                this.exists = true
             }
             catch(e){
                 console.log(e)
             }
             finally{
-                this.comment = ''
 
                 var options = {
                     text: "Comentario Enviado",

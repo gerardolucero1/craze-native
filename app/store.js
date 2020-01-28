@@ -6,6 +6,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
 	state: {
 	  	user: null,
+      token: null,
+      settings: null,
 	},
   	mutations: {
   		updateUser(state, payload){
@@ -14,6 +16,14 @@ export default new Vuex.Store({
 
       updateIndex(state, payload){
         state.user.index = payload
+      },
+
+      updateToken(state, payload){
+        state.token = payload
+      },
+
+      updateSettings(state, payload){
+        state.settings = payload
       }
 	},
   	actions: {

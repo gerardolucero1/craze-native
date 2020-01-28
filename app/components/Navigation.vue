@@ -77,7 +77,7 @@
                         <Image class="btn-navigation" src="~/assets/images/gancho.png" width="50" @tap="goToCloset" />
                     </FlexboxLayout>
                     <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="2">
-                        <Image class="btn-navigation" src="~/assets/images/tiendas.png" @tap="gotToMap" />
+                        <Image class="btn-navigation" src="~/assets/images/tiendas.png" />
                     </FlexboxLayout>
                     <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="3">
                         <Image class="btn-navigation" src="~/assets/images/config.png" @tap="goToSettings" />
@@ -197,10 +197,6 @@ export default{
 
         goToCloset(){
             this.$navigateTo(Closet)
-        },
-
-        goToMap(){
-            this.$navigateTo(Mapa)
         },
 
         goToSettings(){

@@ -51,7 +51,7 @@
 
                     <StackLayout orientation="horizontal" horizontalAlignment="center">
                         <Image margin="10" src="~/assets/images/google.png" @tap="loginGoogle" stretch="none" />
-                        <!-- <Image margin="10" src="~/assets/images/facebook.png" @tap="loginFacebook" stretch="none" /> -->
+                        <Image margin="10" src="~/assets/images/facebook.png" @tap="loginFacebook" stretch="none" />
                     </StackLayout>
                 </StackLayout>
                 
@@ -184,14 +184,21 @@ export default {
             try{
                 let response = await firebase.login({
                     type: firebase.LoginType.FACEBOOK,
-                    facebookOptions: {
-                      // full list: https://developers.facebook.com/docs/facebook-login/permissions/
-                      scope: ["public_profile", "email"] // optional: defaults to ['public_profile', 'email']
-                    }
                 })
 
                 if(response){
-                    console.log(JSON.stringify(response))
+                    console.log(JSON.stringify(response.additionalUserInfo.isNewUser))
+
+                    if(response.additionalUserInfo.isNewUser){
+                        let user = {
+                            uid: response.uid,
+                            index: '4NiIMY23iJB4teAc86q1',
+                            nombre: response.displayName
+                        }
+
+                        firebase.firestore.collection('usuarios').doc(user.uid).set(user)
+                    }
+                    
                     this.user.uid = response.uid
 
                     this.$store.commit('updateUser', this.user)
