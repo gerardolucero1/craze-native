@@ -171,7 +171,7 @@
 
                         <StackLayout>
                             <Button class="btn-save" text="GUARDAR CONFIGURACION" @tap="saveSettings" />
-                            <Button class="btn-close" text="VER TOKEN" @tap="viewToken" />
+                            <!-- <Button class="btn-close" text="VER TOKEN" @tap="viewToken" /> -->
                             <Button class="btn-close" text="CERRAR SESION" @tap="closeSesion" />
                         </StackLayout>
                     </StackLayout>
@@ -260,15 +260,30 @@ export default {
 
     methods: {
         goToHome(){
-            this.$navigateTo(Home)
+            this.$navigateTo(Home, {
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
+            })
         },
 
         goToCloset(){
-            this.$navigateTo(Closet)
+            this.$navigateTo(Closet, {
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
+            })
         },
 
         goToMap(){
-            this.$navigateTo(Mapa)
+            this.$navigateTo(Mapa, {
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
+            })
         },
 
         addCategory(name){

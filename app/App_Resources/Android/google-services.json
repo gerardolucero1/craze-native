@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "999017124538-roa5tqd60tko2d8fn6ur4ho83r3n4qea.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.partnergrammer.craze",
+            "certificate_hash": "c6a7657ccf10b4ba5520003a0cbd04b3dba0f3d9"
+          }
+        },
+        {
           "client_id": "999017124538-8g0p2npnj34lv3gvt5rgcq0js1cg1hcv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -52,7 +52,7 @@
         </ActionBar>
 
         <GridLayout rows="*, 60">
-            <StackLayout row="0">
+            <StackLayout v-if="settings != null" row="0">
                 <!-- <WrapLayout orientation="vertical"> -->
                     <StackLayout v-if="clothes.length != 0" class="banner">
                         <!-- <SwipeCard
@@ -65,7 +65,7 @@
                             cardWidth="80"
                             isRandomColor="1"
                             >
-                        </SwipeCard> --> 
+                        </SwipeCard>  -->
                         <Image class="imagen" margin="20" android:borderRadius="20" androidElevation="5" android:backgroundColor="white" :src="clothes[0].foto" stretch="aspectFill" @doubleTap="maybeLater" @tap="goToDetails(clothes[0].id)" @swipe="onSwipe($event)" />
                     </StackLayout>
                 
@@ -75,6 +75,9 @@
                     </FlexboxLayout>
                 <!-- </WrapLayout> -->
             </StackLayout>
+            <FlexboxLayout v-else row="0" justifyContent="center" alignItems="center">
+                <Label text="Ve a configuraciones y marca tus preferencias" />
+            </FlexboxLayout>
 
             <StackLayout row="1" orientation="horizontal">
                 <GridLayout columns="*, *, *, *" rows="60" class="navigation">
@@ -128,6 +131,7 @@ export default {
         	clothes: [], 
             last: null,
             settings: null,
+            stackCards: [],
         }
     },
 
@@ -169,20 +173,39 @@ export default {
             this.$navigateTo(Details, {
                 props:{
                     id: id,
-                }
+                },
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
             })
         },
 
         goToCloset(){
-            this.$navigateTo(Closet)
+            this.$navigateTo(Closet, {
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
+            })
         },
 
         goToMap(){
-            this.$navigateTo(Mapa)
+            this.$navigateTo(Mapa, {
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
+            })
         },
 
         goToSettings(){
-            this.$navigateTo(Settings)
+            this.$navigateTo(Settings, {
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
+            })
         },
 
         async getSettings(){
@@ -267,6 +290,8 @@ export default {
 
                 this.$store.commit('updateIndex', this.clothes[1].id)
                 this.clothes.splice(0, 1)
+
+                this.updateIndexFirestore(this.clothes[1].id)
             } catch(e) {
                 console.log(e);
             }
@@ -290,6 +315,8 @@ export default {
 
                 this.$store.commit('updateIndex', this.clothes[1].id)
                 this.clothes.splice(0, 1)
+
+                this.updateIndexFirestore(this.clothes[1].id)
             } catch(e) {
                 console.log(e);
             }
@@ -315,14 +342,23 @@ export default {
             toast.show(options)
         },
 
+        async updateIndexFirestore(args){
+            try{
+                let response = await firebase.firestore.collection('usuarios')
+                                                        .doc(this.user.uid)
+                                                        .update({index: args})
+            }
+            catch(e){
+                console.log(e)
+            }
+        },
+
         onSwipe(args){
             console.log(args.direction)
             if (args.direction === 1) {
-                this.disLike()
-                
-            } else {
-                //left
                 this.like()
+            } else {
+                this.disLike()
             }
         },
 

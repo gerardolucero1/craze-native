@@ -192,15 +192,30 @@ export default{
 
     methods:{
         goToHome(){
-            this.$navigateTo(Home)
+            this.$navigateTo(Home, {
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
+            })
         },
 
         goToCloset(){
-            this.$navigateTo(Closet)
+            this.$navigateTo(Closet, {
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
+            })
         },
 
         goToSettings(){
-            this.$navigateTo(Settings)
+            this.$navigateTo(Settings, {
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
+            })
         },
 
         // getLocation(){

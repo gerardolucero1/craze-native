@@ -82,7 +82,9 @@ export default {
                 email: '',
                 password: '',
                 uid: '',
-            }
+            },
+
+            clothes: [],
         }
     },
 
@@ -93,6 +95,24 @@ export default {
     methods: {
         goToLogin(){
             this.$navigateTo(Login)
+        },
+
+        async getClothes(){
+            try {
+                let response = await firebase.firestore.collection('prendas')
+                                                .orderBy('id')
+                                                .limit(1)
+                                                .onSnapshot(query => {
+                                                    query.forEach(doc => {
+                                                        this.clothes.push(doc.data())
+                                                    })
+                                                })
+                if(response){
+                    console.log(this.clothes)
+                }
+            } catch(e) {
+                console.log(e);
+            }               
         },
 
         async createUser(){
@@ -106,7 +126,7 @@ export default {
                     if(response.additionalUserInfo.isNewUser){
                         let user = {
                             uid: response.uid,
-                            index: '4NiIMY23iJB4teAc86q1',
+                            index: this.clothes[0].id,
                             nombre: 'User-' + response.uid
                         }
 
@@ -137,7 +157,7 @@ export default {
                     if(response.additionalUserInfo.isNewUser){
                         let user = {
                             uid: response.uid,
-                            index: '4NiIMY23iJB4teAc86q1',
+                            index: this.clothes[0].id,
                             nombre: response.displayName
                         }
 
@@ -167,7 +187,7 @@ export default {
                     if(response.additionalUserInfo.isNewUser){
                         let user = {
                             uid: response.uid,
-                            index: '4NiIMY23iJB4teAc86q1',
+                            index: this.clothes[0].id,
                             nombre: response.displayName
                         }
 

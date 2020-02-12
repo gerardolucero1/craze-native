@@ -193,22 +193,41 @@ export default {
 
     methods: {
         goToHome(){
-            this.$navigateTo(Home)
+            this.$navigateTo(Home, {
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
+            })
         },
 
         goToMap(){
-            this.$navigateTo(Mapa)
+            this.$navigateTo(Mapa, {
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
+            })
         },
 
         goToSettings(){
-            this.$navigateTo(Settings)
+            this.$navigateTo(Settings, {
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
+            })
         },
 
         goToDetails(id){
             this.$navigateTo(Details, {
                 props:{
                     id: id,
-                }
+                },
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
             })
         },
 

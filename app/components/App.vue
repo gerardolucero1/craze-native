@@ -60,7 +60,7 @@ export default {
     },
 
     mounted() {
-        
+
     },
 
     methods: {
@@ -75,17 +75,30 @@ export default {
                         
                         if(response.exists){
                             this.$store.commit('updateUser', response.data())
-                            this.$navigateTo(Home) 
+                            this.$navigateTo(Home, {
+                                animated: true,
+                                transition: {
+                                    name: 'fade',
+                                },
+                            }) 
                         }
                     }else{
-                        this.$navigateTo(Login)
+                        this.$navigateTo(Login, {
+                            animated: true,
+                            transition: {
+                                name: 'fade',
+                            },
+                        })
                     }
                   })
                   .catch(error => {
-                        this.$navigateTo(Login)
+                        this.$navigateTo(Login, {
+                            animated: true,
+                            transition: {
+                                name: 'fade',
+                            },
+                        })
                   })
-
-            
         },
         
         async logginGoogle(){

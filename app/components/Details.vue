@@ -279,26 +279,50 @@ export default {
 
     methods: {
         goToHome(){
-            this.$navigateTo(Home)
+            this.$navigateTo(Home, {
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
+            })
         },
 
         goToCloset(){
-            this.$navigateTo(Closet)
+            this.$navigateTo(Closet, {
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
+            })
         },
 
         goToMap(){
-            this.$navigateTo(Mapa)
+            this.$navigateTo(Mapa, {
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
+            })
         },
 
         goToSettings(){
-            this.$navigateTo(Settings)
+            this.$navigateTo(Settings, {
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
+            })
         },
 
         goToNavigation(){
             this.$navigateTo(Navigation, {
                 props:{
                     id: this.boutique.id,
-                }
+                },
+                animated: true,
+                transition: {
+                    name: 'fade',
+                },
             })
         },
 
