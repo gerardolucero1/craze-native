@@ -180,7 +180,8 @@
             </ScrollView>
 
             <StackLayout row="1" orientation="horizontal">
-                <GridLayout columns="*, *, *, *" rows="60" class="navigation">
+                <Footer />
+                <!-- <GridLayout columns="*, *, *, *" rows="60" class="navigation">
                     <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="0">
                         <Image class="btn-navigation" src="~/assets/images/home.png" @tap="goToHome" />
                     </FlexboxLayout>
@@ -193,7 +194,7 @@
                     <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="3">
                         <Image class="btn-navigation" src="~/assets/images/config.png" />
                     </FlexboxLayout>
-                </GridLayout>
+                </GridLayout> -->
             </StackLayout>
         </GridLayout>
     </Page>
@@ -210,12 +211,6 @@ import { mapState } from 'vuex'
 const toast = require('nativescript-toasts')
 
 //Pages
-import Home from './Home.vue'
-import Closet from './Closet.vue'
-import Mapa from './Map.vue'
-import Navigation from './Navigation.vue'
-import Details from './Details.vue'
-import Settings from './Settings.vue'
 import Inicio from './App.vue'
 
 export default {
@@ -259,33 +254,6 @@ export default {
     },
 
     methods: {
-        goToHome(){
-            this.$navigateTo(Home, {
-                animated: true,
-                transition: {
-                    name: 'fade',
-                },
-            })
-        },
-
-        goToCloset(){
-            this.$navigateTo(Closet, {
-                animated: true,
-                transition: {
-                    name: 'fade',
-                },
-            })
-        },
-
-        goToMap(){
-            this.$navigateTo(Mapa, {
-                animated: true,
-                transition: {
-                    name: 'fade',
-                },
-            })
-        },
-
         addCategory(name){
             console.log(name)
             if(this.seleccion.includes(name)){

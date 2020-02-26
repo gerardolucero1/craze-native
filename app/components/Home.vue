@@ -56,7 +56,7 @@
                 <!-- <WrapLayout orientation="vertical"> -->
                     <StackLayout v-if="clothes.length != 0" class="banner">
                         <!-- <SwipeCard
-                            marginTop="-30"
+                            marginTop="-10"
                             height="100%"
                             width="100%" 
                             :items="stackCards"
@@ -80,7 +80,8 @@
             </FlexboxLayout>
 
             <StackLayout row="1" orientation="horizontal">
-                <GridLayout columns="*, *, *, *" rows="60" class="navigation">
+                <Footer />
+                <!-- <GridLayout columns="*, *, *, *" rows="60" class="navigation">
                     <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="0">
                         <Image class="btn-navigation" src="~/assets/images/home.png" />
                     </FlexboxLayout>
@@ -93,13 +94,17 @@
                     <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="3">
                         <Image class="btn-navigation" src="~/assets/images/config.png" @tap="goToSettings" />
                     </FlexboxLayout>
-                </GridLayout>
+                </GridLayout> -->
             </StackLayout>
         </GridLayout>
     </Page>
 </template>
 
 <script>
+//Back button
+import * as application from "tns-core-modules/application"
+import { AndroidApplication, AndroidActivityBackPressedEventData } from "tns-core-modules/application"
+
 //Firebase
 const firebase = require("nativescript-plugin-firebase")
 
@@ -115,13 +120,7 @@ import { Image } from 'tns-core-modules/ui/image'
 import { SwipeEvent } from 'nativescript-swipe-card'
 
 //Pages
-import Home from './Home.vue'
-import Closet from './Closet.vue'
-import Mapa from './Map.vue'
-import Navigation from './Navigation.vue'
 import Details from './Details.vue'
-import Settings from './Settings.vue'
-
 
 export default {
     name: 'Home',
@@ -161,7 +160,7 @@ export default {
     },
 
     created(){
-
+        
     },
 
     mounted() {
@@ -174,33 +173,6 @@ export default {
                 props:{
                     id: id,
                 },
-                animated: true,
-                transition: {
-                    name: 'fade',
-                },
-            })
-        },
-
-        goToCloset(){
-            this.$navigateTo(Closet, {
-                animated: true,
-                transition: {
-                    name: 'fade',
-                },
-            })
-        },
-
-        goToMap(){
-            this.$navigateTo(Mapa, {
-                animated: true,
-                transition: {
-                    name: 'fade',
-                },
-            })
-        },
-
-        goToSettings(){
-            this.$navigateTo(Settings, {
                 animated: true,
                 transition: {
                     name: 'fade',
@@ -244,7 +216,7 @@ export default {
                                                 this.clothes.unique()
                                                 
                                                 //Llamamos el metodo que creara los layouts de las cards
-                                                //this.makeStack()
+                                                // this.makeStack()
                                                 })
                 if(response){
                     console.log(this.clothes)

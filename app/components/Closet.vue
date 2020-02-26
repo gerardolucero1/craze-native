@@ -100,20 +100,7 @@
             </ScrollView>
 
             <StackLayout row="1" orientation="horizontal">
-                <GridLayout columns="*, *, *, *" rows="60" class="navigation">
-                    <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="0">
-                        <Image class="btn-navigation" src="~/assets/images/home.png" @tap="goToHome" />
-                    </FlexboxLayout>
-                    <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="1">
-                        <Image class="btn-navigation" src="~/assets/images/gancho.png" width="50" />
-                    </FlexboxLayout>
-                    <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="2">
-                        <Image class="btn-navigation" src="~/assets/images/tiendas.png" @tap="goToMap" />
-                    </FlexboxLayout>
-                    <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="3">
-                        <Image class="btn-navigation" src="~/assets/images/config.png" @tap="goToSettings" />
-                    </FlexboxLayout>
-                </GridLayout>
+                <Footer />
             </StackLayout>
         </GridLayout>
     </Page>
@@ -160,12 +147,7 @@ const options = {
 };
 
 //Pages
-import Home from './Home.vue'
-import Closet from './Closet.vue'
-import Mapa from './Map.vue'
-import Navigation from './Navigation.vue'
 import Details from './Details.vue'
-import Settings from './Settings.vue'
 
 export default {
     name: 'Closet',
@@ -192,33 +174,6 @@ export default {
     },
 
     methods: {
-        goToHome(){
-            this.$navigateTo(Home, {
-                animated: true,
-                transition: {
-                    name: 'fade',
-                },
-            })
-        },
-
-        goToMap(){
-            this.$navigateTo(Mapa, {
-                animated: true,
-                transition: {
-                    name: 'fade',
-                },
-            })
-        },
-
-        goToSettings(){
-            this.$navigateTo(Settings, {
-                animated: true,
-                transition: {
-                    name: 'fade',
-                },
-            })
-        },
-
         goToDetails(id){
             this.$navigateTo(Details, {
                 props:{

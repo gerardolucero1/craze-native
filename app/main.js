@@ -1,29 +1,30 @@
+// Core
 import VueDevtools from 'nativescript-vue-devtools'
-import Vue from 'nativescript-vue'
-import App from './components/App'
-import Details from './components/Details'
-import { AndroidApplication, AndroidActivityBackPressedEventData } from "tns-core-modules/application";
-
-
+import * as application from "tns-core-modules/application";
+import { AndroidApplication, AndroidActivityBackPressedEventData } from "tns-core-modules/application"
+import { isAndroid } from "tns-core-modules/platform";
 import * as platform from 'tns-core-modules/platform'
-
 import { handleOpenURL, AppURL } from 'nativescript-urlhandler'
 
-if (platform.isIOS) { 
-  GMSServices.provideAPIKey("AIzaSyBpGZdpD4kaH1T5ZMZFyZL1wok4ySkniu8")
-}
+// Pages
+import Vue from 'nativescript-vue'
+import App from './components/App'
+import Home from './components/Home'
+import Footer from './components/shared/Footer'
 
-
+// Vuex
 import store from './store'
 
 var firebase = require("nativescript-plugin-firebase")
-var SocialShare = require("nativescript-social-share")
-var imageSourceModule = require("tns-core-modules/image-source")
+// var SocialShare = require("nativescript-social-share")
+// var imageSourceModule = require("tns-core-modules/image-source")
 
+// Inicializar Firebase
 firebase.init({
     showNotifications: true,
     showNotificationsWhenInForeground: true,
 
+    // Notifiaciones push
     onPushTokenReceivedCallback: (token) => {
         console.log('[Firebase] onPushTokenReceivedCallback:', { token });
         store.commit('updateToken', token)
@@ -41,6 +42,7 @@ firebase.init({
     }
 )
 
+// Obtener el usuario actual logeado
 firebase.getCurrentUser()
       .then(async user => {
         let response = await firebase.firestore
@@ -49,18 +51,38 @@ firebase.getCurrentUser()
                                     .get()
         store.commit('updateUser', response.data())
       })
-      .catch(error => console.log("Trouble in paradise: " + error))
+      .catch(error => console.log("Problemas en el paraiso: " + error))
 
+
+// Vue dev-tools
 Vue.use(VueDevtools, { host: '192.168.1.147' })
 
 // Prints Vue logs when --env.production is *NOT* set while building
 Vue.config.silent = (TNS_ENV === 'production')
 
+//Registrar los componentes externos
+Vue.component('Footer', Footer)
 Vue.registerElement('MapView', ()=> require('nativescript-google-maps-sdk').MapView)
 
 new Vue({
     mounted(){
-        console.log('Se inicia la app')
+        //BackButton
+        if(isAndroid){
+            let that = this
+
+            application.android.on(AndroidApplication.activityBackPressedEvent, (AndroidActivityBackPressedEventData) => {
+                console.log('Back Button pressed')
+                // AndroidActivityBackPressedEventData.cancel = true
+                // that.$navigateTo(Home, {
+                //     animated: true,
+                //     transition: {
+                //         name: 'fade',
+                //     },
+                // })
+            })
+        }
+
+        //DepLinks
         handleOpenURL((appURL) => {
             
             let URLPath = appURL.path

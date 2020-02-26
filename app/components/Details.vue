@@ -167,7 +167,8 @@
             </ScrollView>
 
             <StackLayout row="1" orientation="horizontal">
-                <GridLayout columns="*, *, *, *" rows="60" class="navigation">
+                <Footer />
+                <!-- <GridLayout columns="*, *, *, *" rows="60" class="navigation">
                     <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="0">
                         <Image class="btn-navigation" src="~/assets/images/home.png" @tap="goToHome" />
                     </FlexboxLayout>
@@ -180,13 +181,17 @@
                     <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="3">
                         <Image class="btn-navigation" src="~/assets/images/config.png" @tap="goToSettings" />
                     </FlexboxLayout>
-                </GridLayout>
+                </GridLayout> -->
             </StackLayout>
         </GridLayout>
     </Page>
 </template>
 
 <script>
+//Back button
+import * as application from "tns-core-modules/application"
+import { AndroidApplication, AndroidActivityBackPressedEventData } from "tns-core-modules/application"
+
 //Firebase
 const firebase = require("nativescript-plugin-firebase")
 
@@ -231,11 +236,6 @@ const options = {
 import { mapState } from 'vuex'
 
 //Pages
-import Home from './Home.vue'
-import Closet from './Closet.vue'
-import Mapa from './Map.vue'
-import Details from './Details.vue'
-import Settings from './Settings.vue'
 import Navigation from './Navigation.vue'
 
 export default {
@@ -272,48 +272,20 @@ export default {
         }
     },
 
+    created(){
+        // let that = this;
+
+        // application.android.on(AndroidApplication.activityBackPressedEvent, (AndroidActivityBackPressedEventData) => {
+        //     that.backButton(AndroidActivityBackPressedEventData)
+        // })
+    },
+
     mounted() {
         this.getGarment()
         this.getComment()
     },
 
     methods: {
-        goToHome(){
-            this.$navigateTo(Home, {
-                animated: true,
-                transition: {
-                    name: 'fade',
-                },
-            })
-        },
-
-        goToCloset(){
-            this.$navigateTo(Closet, {
-                animated: true,
-                transition: {
-                    name: 'fade',
-                },
-            })
-        },
-
-        goToMap(){
-            this.$navigateTo(Mapa, {
-                animated: true,
-                transition: {
-                    name: 'fade',
-                },
-            })
-        },
-
-        goToSettings(){
-            this.$navigateTo(Settings, {
-                animated: true,
-                transition: {
-                    name: 'fade',
-                },
-            })
-        },
-
         goToNavigation(){
             this.$navigateTo(Navigation, {
                 props:{
@@ -324,6 +296,14 @@ export default {
                     name: 'fade',
                 },
             })
+        },
+
+        backButton(args){
+            if(this.$options.name == 'Details'){
+                args.cancel = true
+                console.log('Estas en Details')
+                // this.goToHome()
+            }
         },
 
         shareClothes(){

@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "999017124538-roa5tqd60tko2d8fn6ur4ho83r3n4qea.apps.googleusercontent.com",
+          "client_id": "999017124538-86kl4t4adk01luqt1vlduu2jm59p15r5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.partnergrammer.craze",
-            "certificate_hash": "c6a7657ccf10b4ba5520003a0cbd04b3dba0f3d9"
+            "certificate_hash": "e6c593a664325c9a4c1d4e5890d6ec08a7ff6c7a"
           }
         },
         {

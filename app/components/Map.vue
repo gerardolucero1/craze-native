@@ -65,7 +65,8 @@
             </ScrollView>
 
             <StackLayout row="1" orientation="horizontal">
-                <GridLayout columns="*, *, *, *" rows="60" class="navigation">
+                <Footer />
+                <!-- <GridLayout columns="*, *, *, *" rows="60" class="navigation">
                     <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="0">
                         <Image class="btn-navigation" src="~/assets/images/home.png" @tap="goToHome" />
                     </FlexboxLayout>
@@ -78,7 +79,7 @@
                     <FlexboxLayout alignItems="center" justifyContent="center" row="0" col="3">
                         <Image class="btn-navigation" src="~/assets/images/config.png" @tap="goToSettings" />
                     </FlexboxLayout>
-                </GridLayout>
+                </GridLayout> -->
             </StackLayout>
         </GridLayout>
 	</Page>
@@ -106,12 +107,7 @@ const firebase = require("nativescript-plugin-firebase")
 import { store } from 'vuex'
 
 //Pages
-import Home from './Home.vue'
-import Closet from './Closet.vue'
-import Mapa from './Map.vue'
-import Navigation from './Navigation.vue'
 import Details from './Details.vue'
-import Settings from './Settings.vue'
 
 //Modals
 import ModalBoutique from './modal/ModalBoutique.vue'
@@ -179,33 +175,6 @@ export default{
 	},
 
 	methods:{
-		goToHome(){
-            this.$navigateTo(Home, {
-                animated: true,
-                transition: {
-                    name: 'fade',
-                },
-            })
-        },
-
-        goToCloset(){
-            this.$navigateTo(Closet, {
-                animated: true,
-                transition: {
-                    name: 'fade',
-                },
-            })
-        },
-
-        goToSettings(){
-            this.$navigateTo(Settings, {
-                animated: true,
-                transition: {
-                    name: 'fade',
-                },
-            })
-        },
-
         // getLocation(){
         //     geolocation.getCurrentLocation({
         //         desiredAccuracy: Accuracy.high,
